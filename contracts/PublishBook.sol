@@ -1,6 +1,9 @@
 pragma solidity ^0.5.0;
 
 contract PublishBook {
+
+    
+
     struct BookInfo{
         string bookTitle;
         string authorName;
@@ -8,13 +11,15 @@ contract PublishBook {
         address publisherAddress;
     }
 
-    mapping(bytes32 => BookInfo) private fileinfo;
+    mapping(uint256 => BookInfo) private fileinfo;
 
-    function addBookDetails (string memory _title, string memory _author, string memory _ipfshash, bytes32 _hash) private{       
-        fileinfo[_hash].bookTitle = _title;
-        fileinfo[_hash].authorName = _author;
-        fileinfo[_hash].ipfsHash = _ipfshash;
-        fileinfo[_hash].publisherAddress = msg.sender;
+    //BookInfo private fileinfo;
+
+    function addBookDetails (string memory _title, string memory _author, string memory _ipfshash, uint256 _isbn) private{       
+        fileinfo[_isbn].bookTitle = _title;
+        fileinfo[_isbn].authorName = _author;
+        fileinfo[_isbn].ipfsHash = _ipfshash;
+        fileinfo[_isbn].publisherAddress = msg.sender;
     }  
 
     
