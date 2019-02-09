@@ -59,7 +59,7 @@ contract Tokenize is IERC721, PublishBook {
      //TO-DO: send struct as token metadata !!!
     function mintWithTokenURI(address to, string memory tokenURI) public onlyMinter returns (bool) {
         //to revert back if the buyer doesn't have the price by the author.
-        require(buyerAdress.value == setPrice[isbn]);
+        require(buyerAddress.value == setPrice[isbn]);
          tokenId = generateTokenID();        
         _mint(to, tokenId);
         _setTokenURI(tokenId, tokenURI);
