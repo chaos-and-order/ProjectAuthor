@@ -7,7 +7,9 @@ contract Tokenize is IERC721, PublishBook {
 
     uint256 isbn;   //Value to come in from the front end.
     uint256 tokenId;
+    uint256 tokenCounter; //arbitrary counter to help generate unique tokenID
     address tokenBuyer; //address of token purchaser via front-end.
+    address buyerAddress;
 
     // Mapping from token ID to owner
     mapping (uint256 => address) private _tokenOwner;
@@ -20,7 +22,8 @@ contract Tokenize is IERC721, PublishBook {
     
     //tokenId a value that will be less than 10,000,000 
     function generateTokenID() private onlyMinter returns(uint256){
-        uint256 tokenid = uint256(keccak256(abi.encodePacked(isbn, now))) % 10000000;
+        tokenCounter++;
+        uint256 tokenid = uint256(keccak256(abi.encodePacked(isbn, now,tokenCounter))) % 10000000;
         return(tokenid);
     }
 
@@ -53,8 +56,10 @@ contract Tokenize is IERC721, PublishBook {
      * @return A boolean that indicates if the operation was successful.
      */
 
-     //TO-DO: Check if buyer has enough ether before minting
+     //TO-DO: send struct as token metadata !!!
     function mintWithTokenURI(address to, string memory tokenURI) public onlyMinter returns (bool) {
+        //to revert back if the buyer doesn't have the price by the author.
+        require(buyerAdress.value == setPrice[isbn]);
          tokenId = generateTokenID();        
         _mint(to, tokenId);
         _setTokenURI(tokenId, tokenURI);
