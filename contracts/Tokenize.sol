@@ -11,12 +11,6 @@ contract Tokenize is IERC721, PublishBook {
     address tokenBuyer; //address of token purchaser via front-end.
     address buyerAddress;
 
-    // Mapping from token ID to owner
-    mapping (uint256 => address) private _tokenOwner;
-
-    // Mapping from token ID to approved address
-    mapping (uint256 => address) private _tokenApprovals;
-
     // Mapping from owner to number of owned token
     mapping (address => Counters.Counter) private _ownedTokensCount;
     

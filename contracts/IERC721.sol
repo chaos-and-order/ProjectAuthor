@@ -8,6 +8,14 @@ import "./MinterRole.sol";
  * @dev see https://github.com/ethereum/EIPs/blob/master/EIPS/eip-721.md
  */
 contract IERC721 is IERC165, MinterRole{
+
+    // Mapping from token ID to owner
+    mapping (uint256 => address) private _tokenOwner;
+
+    // Mapping from token ID to approved address
+    mapping (uint256 => address) private _tokenApprovals;
+
+
     event Transfer(address indexed from, address indexed to, uint256 indexed tokenId);
     event Approval(address indexed owner, address indexed approved, uint256 indexed tokenId);
     event ApprovalForAll(address indexed owner, address indexed operator, bool approved);
