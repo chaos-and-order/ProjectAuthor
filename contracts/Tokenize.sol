@@ -14,6 +14,9 @@ contract Tokenize is ERC721,ERC721MetadataMintable, PublishBook {
 
     // Mapping from owner to number of owned token
     mapping (address => Counters.Counter) private _ownedTokensCount;
+
+    //tokenID to resalePrice mapping
+    mapping (uint256 => uint256) private resalePrice;  
     
     //tokenId a value that will be less than 10,000,000 
     function generateTokenID() private onlyMinter returns(uint256){
