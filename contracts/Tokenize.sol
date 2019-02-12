@@ -1,9 +1,10 @@
 pragma solidity ^0.5.0;
 import "openzeppelin-solidity/contracts/token/ERC721/ERC721.sol";
+import "openzeppelin-solidity/contracts/token/ERC721/ERC721MetadataMintable.sol";
 import "./PublishBook.sol";
 
 
-contract Tokenize is ERC721, PublishBook {
+contract Tokenize is ERC721,ERC721MetadataMintable, PublishBook {
 
     uint256 isbn;   //Value to come in from the front end.
     uint256 tokenId;
@@ -22,7 +23,7 @@ contract Tokenize is ERC721, PublishBook {
     }
 
     
-    function _mint(address to) internal onlyMinter {
+    function _mint(address to, uint256 tokenId) internal onlyMinter {
          require(to != address(0));
          require(!_exists(tokenId));
         _tokenOwner[tokenId] = to;
@@ -53,12 +54,19 @@ contract Tokenize is ERC721, PublishBook {
      //TO-DO: send struct as token metadata !!!
     function mintWithTokenURI(address to, string memory tokenURI) public payable onlyMinter returns (bool) {
         //to revert back if the buyer doesn't have the price by the author.
-        require(buyerAddress.value == setPrice[isbn]);
+        require(to.value == setPrice[isbn]);
          tokenId = generateTokenID();        
         _mint(to, tokenId);
         _setTokenURI(tokenId, tokenURI);
-        
         return true;
+    }
+
+    //function to retreive funds from contract into publisher's account.
+    function sendTo(address _payee, uint256 _amount) public onlyOwner {
+    require(_payee != address(0) && _payee != address(this));
+    require(_amount > 0 && _amount <= address(this).balance);
+    _payee.transfer(_amount);
+    emit Sent(_payee, _amount, address(this).balance);
     }
 
 
