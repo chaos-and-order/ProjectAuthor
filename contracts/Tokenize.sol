@@ -27,8 +27,8 @@ contract Tokenize is ERC721,ERC721MetadataMintable, PublishBook {
 
     
     function _mint(address to, uint256 tokenId) internal onlyMinter {
-         require(to != address(0));
-         require(!_exists(tokenId));
+        require(to != address(0),"Address(0) Error !");
+        require(!_exists(tokenId),"Token ID does not exist !");
         _tokenOwner[tokenId] = to;
         _ownedTokensCount[to].increment();
         emit Transfer(address(0), to, tokenId);
@@ -42,7 +42,7 @@ contract Tokenize is ERC721,ERC721MetadataMintable, PublishBook {
      * @param uri string URI to assign
      */
     function _setTokenURI(uint256 tokenId, string memory uri) internal {
-        require(_exists(tokenId));
+        require(_exists(tokenId),"Token ID does not exist !");
         _tokenURIs[tokenId] = uri;
     }
 
@@ -57,8 +57,9 @@ contract Tokenize is ERC721,ERC721MetadataMintable, PublishBook {
      //TO-DO: send struct as token metadata !!!
     function mintWithTokenURI(address to, string memory tokenURI) public payable onlyMinter returns (bool) {
         //to revert back if the buyer doesn't have the price by the author.
-        require(to.value == setPrice[isbn]);
-         tokenId = generateTokenID();        
+        require(to.value == setPrice[isbn],"Insufficient funds ! Please pay the price as set by the author.");
+        tokenId = generateTokenID();
+        _tokenOwner[tokenId] = to;       
         _mint(to, tokenId);
         _setTokenURI(tokenId, tokenURI);
         return true;
@@ -66,10 +67,11 @@ contract Tokenize is ERC721,ERC721MetadataMintable, PublishBook {
 
     //function to retreive funds from contract into publisher's account.
     function sendTo(address _payee, uint256 _amount) public onlyOwner {
-    require(_payee != address(0) && _payee != address(this));
-    require(_amount > 0 && _amount <= address(this).balance);
-    _payee.transfer(_amount);
-    emit Sent(_payee, _amount, address(this).balance);
+
+        require(_payee != address(0) && _payee != address(this),"Address(0) Erorr !");
+        require(_amount > 0 && _amount <= address(this).balance,"No funds in contract !");
+        _payee.transfer(_amount);
+        emit Sent(_payee, _amount, address(this).balance);
     }
 
 
@@ -80,4 +82,3 @@ contract Tokenize is ERC721,ERC721MetadataMintable, PublishBook {
 
 
 
-}
