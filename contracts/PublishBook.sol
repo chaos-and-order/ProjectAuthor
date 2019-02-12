@@ -16,6 +16,8 @@ contract PublishBook {
 
     mapping (uint256 => uint256) private setPrice; //ISBN is the keyvalue, taken as int
 
+    
+
 
     //BookInfo private fileinfo;
 

@@ -24,61 +24,39 @@ contract Resale is ERC721{
     }
     */
 
-    function _exists(uint256 tokenId) internal view returns (bool) {
-        address owner = _tokenOwner[tokenId];
-        return owner != address(0);
-    }
+    //FUNCTIONS TO BE USED
+
+    function _exists(uint256 tokenId) internal view returns (bool);
 
 
-    function ownerOf(uint256 tokenId) public view returns (address) {
-        address owner = _tokenOwner[tokenId];
-        require(owner != address(0));
-        return owner;
-    }
+    function ownerOf(uint256 tokenId) public view returns (address) ;
 
-    function approve(address to, uint256 tokenId) public {
-        address owner = ownerOf(tokenId);
-        require(to != owner);
-        require(msg.sender == owner); // || isApprovedForAll(owner, msg.sender));  letting go of this function for now
-        //isApprovedForAll and approvalForAll lets someone send all the tokens in the account. Not relevant for us.
-        _tokenApprovals[tokenId] = to;
-        emit Approval(owner, to, tokenId);
-    }
+    function approve(address to, uint256 tokenId);
 
-    function getApproved(uint256 tokenId) public view returns (address) {
-        require(_exists(tokenId));
-        return _tokenApprovals[tokenId];
-    }
+    function getApproved(uint256 tokenId) public view returns (address);
 
-    function _isApprovedOrOwner(address spender, uint256 tokenId) internal view returns (bool) {
-        address owner = ownerOf(tokenId);
-        return (spender == owner || getApproved(tokenId) == spender);
-    }
+    function _isApprovedOrOwner(address spender, uint256 tokenId) internal view returns (bool);
 
-    function transferFrom(address from, address to, uint256 tokenId) public {
+    function transferFrom(address from, address to, uint256 tokenId);
+
+    function _transferFrom(address from, address to, uint256 tokenId);
+
+    function _clearApproval(uint256 tokenId);
+
+
+    //RESALE CODE BEGINS
+/*
+    uint256 tokenId;
+    address to;
+    address from;
+*/
+
+    
+    
+    
+    function setResalePrice(uint256 newPrice, uint256 tokenId) public{
         require(_isApprovedOrOwner(msg.sender, tokenId));
-
-        _transferFrom(from, to, tokenId);
-    }
-
-    function _transferFrom(address from, address to, uint256 tokenId) internal {
-        require(ownerOf(tokenId) == from);
-        require(to != address(0));
-
-        _clearApproval(tokenId);
-
-        //_ownedTokensCount[from].decrement();          Because we aren't using counters as of now
-        //_ownedTokensCount[to].increment();            But the chicken's gonna come to roost soon. BalanceOf's coming for you.
-
-        _tokenOwner[tokenId] = to;
-
-        emit Transfer(from, to, tokenId);
-    }
-
-    function _clearApproval(uint256 tokenId) private {
-        if (_tokenApprovals[tokenId] != address(0)) {
-            _tokenApprovals[tokenId] = address(0);
-        }
+        resalePrice[tokenId] = newPrice;
     }
 
 }
