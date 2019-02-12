@@ -1,8 +1,8 @@
 pragma solidity ^0.5.0;
-import "./IERC721";
+import "openzeppelin-solidity/contracts/token/ERC721/ERC721.sol";;
 
 
-contract ERC721 is IERC721{
+contract Resale is ERC721{
 
 
     //TO DO: As user logs in, he needs to see his current libraby, without sacrificing privacy.
