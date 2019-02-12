@@ -9,14 +9,17 @@ contract PublishBook {
         string authorName;
         string ipfsHash;
         address publisherAddress;  //Payable address ??
-        uint256 saleCommission; //in percent (0-100 integers)
+        //uint256 saleCommission; //in percent (0-100 integers)
     }
 
-    mapping(uint256 => BookInfo) private fileinfo; //ISBN is the keyvalue, taken as int 
+    //ISBN is the keyvalue, taken as int
+    mapping(uint256 => BookInfo) private fileinfo;  
 
-    mapping (uint256 => uint256) private setPrice; //ISBN is the keyvalue, taken as int
+    //ISBN is the keyvalue, taken as int
+    mapping (uint256 => uint256) private setPrice; 
 
-    
+    //to retrieve commission for a givenbook for secondary sales
+    mapping(uint256 => uint256) private saleCommission;
 
 
     //BookInfo private fileinfo;
@@ -28,8 +31,10 @@ contract PublishBook {
         fileinfo[_isbn].authorName = _author;
         fileinfo[_isbn].ipfsHash = _ipfshash;
         fileinfo[_isbn].publisherAddress = msg.sender;
-        fileinfo[_isbn].saleCommission = _saleCommission;
+        //fileinfo[_isbn].saleCommission = _saleCommission;
     }  
+
+    saleCommission[_isbn] = _saleCommission;
 
 
 
