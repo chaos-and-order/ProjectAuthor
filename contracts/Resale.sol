@@ -60,9 +60,24 @@ contract Resale is Tokenize{
         reSale[tokenId].isUpForResale = true;
     }
 
+
+    //this is a one-on-one transaction. Needs to be an auction in future
     function buyFromIndividual(uint256 tokenId) public payable{
+        //works only if the given token is up for sale
+        require(reSale[tokenId].isUpForResale == true);
+        
         //set to a static value. This becomes an auction in future versions
         require(msg.value == reSale[tokenId].resalePrice);
+        
+        //commission value retrieved from fileinfo via resale
+        uint256 commissionPercent = fileinfo[reSale[tokenId].ISBN].saleCommission;
+        
+        sendTo(fileinfo[reSale[tokenId].ISBN].publisherAddress, msg.value*(commissionPercent/100));
+
+        sendTo(_tokenOwner[tokenId],msg.value - (msg.value*(commissionPercent/100)));
+        
+        _tokenOwner[tokenId] = msg.sender;
+
 
     }
 

@@ -9,7 +9,7 @@ contract PublishBook {
         string authorName;
         string ipfsHash;
         address publisherAddress;  //Payable address ??
-        //uint256 saleCommission; //in percent (0-100 integers)
+        uint256 saleCommission; //in percent (0-100 integers)
     }
 
     mapping(uint256 => BookInfo) private fileinfo; //ISBN is the keyvalue, taken as int 
@@ -17,7 +17,7 @@ contract PublishBook {
     mapping (uint256 => uint256) private setPrice; //ISBN is the keyvalue, taken as int
 
     //to retrieve commission for a givenbook for secondary sales
-    mapping(uint256 => uint256) private saleCommission; //in percent (0-100 integers)
+    //mapping(uint256 => uint256) private saleCommission; //in percent (0-100 integers)
 
     //BookInfo private fileinfo;
 
