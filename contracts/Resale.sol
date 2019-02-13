@@ -56,14 +56,14 @@ contract Resale is Tokenize{
     
     function setResalePrice(uint256 newPrice, uint256 tokenId) public{
         require(_isApprovedOrOwner(msg.sender, tokenId));
-        resalePrice[tokenId] = newPrice;
-        isUpForResale[tokenId] = true;
+        reSale[tokenId].resalePrice = newPrice;
+        reSale[tokenId].isUpForResale = true;
     }
 
     function buyFromIndividual(uint256 tokenId) public payable{
         //set to a static value. This becomes an auction in future versions
-        require(msg.value == resalePrice[tokenId]);
-        
+        require(msg.value == reSale[tokenId].resalePrice);
+
     }
 
 }

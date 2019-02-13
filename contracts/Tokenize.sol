@@ -15,11 +15,16 @@ contract Tokenize is ERC721,ERC721MetadataMintable, PublishBook {
     // Mapping from owner to number of owned token
     mapping (address => Counters.Counter) private _ownedTokensCount;
 
-    //tokenID to resalePrice mapping
-    mapping (uint256 => uint256) private resalePrice;  
+    struct Reselling{
+        uint256 resalePrice;
+        bool isUpForResale;
+    }
+
+    //tokenID to Reselling mapping
+    mapping (uint256 => Reselling) private reSale;  
     
     //tokenID to bool value mapping, whether or not the given token is up for resale
-    mapping(uint256 => bool) private isUpForResale;
+    //mapping(uint256 => bool) private isUpForResale;
     
     //tokenId a value that will be less than 10,000,000 
     function generateTokenID() private onlyMinter returns(uint256){
@@ -67,10 +72,10 @@ contract Tokenize is ERC721,ERC721MetadataMintable, PublishBook {
         _setTokenURI(tokenId, tokenURI);
 
         //resalePrice set to initial MRP by default
-        resalePrice[tokenId] = setPrice[isbn];
+        reSale[tokenId].resalePrice = setPrice[isbn];
         
         //token is not up for resale by default; the owner needs to put it up for sale
-        isUpForResale[tokenId] = false;
+        reSale[tokenId].isUpForResale = false;
         return true;
     }
 
