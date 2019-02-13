@@ -18,10 +18,18 @@ contract Tokenize is ERC721,ERC721MetadataMintable, PublishBook {
     struct Reselling{
         uint256 resalePrice;
         bool isUpForResale;
+        uint256 ISBN;
     }
 
     //tokenID to Reselling mapping
-    mapping (uint256 => Reselling) private reSale;  
+    mapping (uint256 => Reselling) private reSale;
+
+    // a wild try. This will be the tokendata.
+    struct tokenIPFS{
+        string ipfsHash; 
+    }
+
+    mapping(uint256 => tokenIPFS) private tokenData;  
     
     //tokenID to bool value mapping, whether or not the given token is up for resale
     //mapping(uint256 => bool) private isUpForResale;
@@ -39,6 +47,14 @@ contract Tokenize is ERC721,ERC721MetadataMintable, PublishBook {
         require(!_exists(tokenId),"Token ID does not exist !");
         _tokenOwner[tokenId] = to;
         _ownedTokensCount[to].increment();
+
+        //resalePrice set to initial MRP by default
+        reSale[tokenId].resalePrice = setPrice[isbn];
+        //token is not up for resale by default; the owner needs to put it up for sale
+        reSale[tokenId].isUpForResale = false;
+        reSale[tokenId].ISBN = isbn;
+        tokenData[tokenId].ipfsHash = fileinfo[isbn].ipfsHash;        
+        
         emit Transfer(address(0), to, tokenId);
     }
 
@@ -71,11 +87,7 @@ contract Tokenize is ERC721,ERC721MetadataMintable, PublishBook {
         _mint(to, tokenId);
         _setTokenURI(tokenId, tokenURI);
 
-        //resalePrice set to initial MRP by default
-        reSale[tokenId].resalePrice = setPrice[isbn];
-        
-        //token is not up for resale by default; the owner needs to put it up for sale
-        reSale[tokenId].isUpForResale = false;
+
         return true;
     }
 
