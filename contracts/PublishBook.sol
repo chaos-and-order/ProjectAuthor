@@ -36,6 +36,7 @@ contract PublishBook {
 
     function withdrawBalance() public payable{
         (msg.sender).transfer(publisherBalance[msg.sender]);
+        publisherBalance[msg.sender] = 0;
     }
 
 }
