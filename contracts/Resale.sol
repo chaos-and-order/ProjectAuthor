@@ -72,10 +72,15 @@ contract Resale is Tokenize{
         //commission value retrieved from fileinfo via resale
         uint256 commissionPercent = fileinfo[reSale[tokenId].ISBN].saleCommission;
         
-        sendTo(fileinfo[reSale[tokenId].ISBN].publisherAddress, msg.value*(commissionPercent/100));
+        //commission doesn't need to be transferred in real time.
 
-        sendTo(_tokenOwner[tokenId],msg.value - (msg.value*(commissionPercent/100)));
+        //sendTo(fileinfo[reSale[tokenId].ISBN].publisherAddress, msg.value*(commissionPercent/100));
+        //newer version of the above line of code.
+        publisherBalance[fileinfo[reSale[tokenId].ISBN].publisherAddress] += msg.value*(commissionPercent/100);
+
+        //sendTo(_tokenOwner[tokenId],msg.value - (msg.value*(commissionPercent/100)));
         
+        _tokenOwner[tokenId].transfer(msg.value - (msg.value*(commissionPercent/100)));
         _tokenOwner[tokenId] = msg.sender;
         reSale[tokenId].isUpForResale = false;
 

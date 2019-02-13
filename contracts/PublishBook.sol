@@ -16,6 +16,9 @@ contract PublishBook {
 
     mapping (uint256 => uint256) private setPrice; //ISBN is the keyvalue, taken as int
 
+    //for knowing the balance for each publisher
+    mapping (address => uint256) private publisherBalance;
+    
     //to retrieve commission for a givenbook for secondary sales
     //mapping(uint256 => uint256) private saleCommission; //in percent (0-100 integers)
 
@@ -31,10 +34,8 @@ contract PublishBook {
         fileinfo[_isbn].saleCommission = _saleCommission;
     }  
 
-
-
-
-    
-
+    function withdrawBalance() public payable{
+        (msg.sender).transfer(publisherBalance[msg.sender]);
+    }
 
 }

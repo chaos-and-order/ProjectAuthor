@@ -87,7 +87,8 @@ contract Tokenize is ERC721,ERC721MetadataMintable, PublishBook {
         _mint(to, tokenId);
         _setTokenURI(tokenId, tokenURI);
 
-
+        //publisher's balance gets updated    
+        publisherBalance[fileinfo[isbn].publisherAddress] += to.value;
         return true;
     }
 
