@@ -18,6 +18,9 @@ contract Tokenize is ERC721,ERC721MetadataMintable, PublishBook {
     //tokenID to resalePrice mapping
     mapping (uint256 => uint256) private resalePrice;  
     
+    //tokenID to bool value mapping, whether or not the given token is up for resale
+    mapping(uint256 => bool) private isUpForResale;
+    
     //tokenId a value that will be less than 10,000,000 
     function generateTokenID() private onlyMinter returns(uint256){
         tokenCounter++;
@@ -62,6 +65,12 @@ contract Tokenize is ERC721,ERC721MetadataMintable, PublishBook {
         _tokenOwner[tokenId] = to;       
         _mint(to, tokenId);
         _setTokenURI(tokenId, tokenURI);
+
+        //resalePrice set to initial MRP by default
+        resalePrice[tokenId] = setPrice[isbn];
+        
+        //token is not up for resale by default; the owner needs to put it up for sale
+        isUpForResale[tokenId] = false;
         return true;
     }
 
@@ -72,6 +81,10 @@ contract Tokenize is ERC721,ERC721MetadataMintable, PublishBook {
         require(_amount > 0 && _amount <= address(this).balance,"No funds in contract !");
         _payee.transfer(_amount);
         emit Sent(_payee, _amount, address(this).balance);
+
+
+        //TO DO: Make it usable for multiple Publishers!!  
+        //A mapping would suffice I guess.
     }
 
 

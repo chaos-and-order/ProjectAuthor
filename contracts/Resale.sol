@@ -1,8 +1,8 @@
 pragma solidity ^0.5.0;
-import "openzeppelin-solidity/contracts/token/ERC721/ERC721.sol";;
+import "./Tokenize.sol";
 
 
-contract Resale is ERC721{
+contract Resale is Tokenize{
 
 
     //TO DO: As user logs in, he needs to see his current libraby, without sacrificing privacy.
@@ -57,8 +57,13 @@ contract Resale is ERC721{
     function setResalePrice(uint256 newPrice, uint256 tokenId) public{
         require(_isApprovedOrOwner(msg.sender, tokenId));
         resalePrice[tokenId] = newPrice;
+        isUpForResale[tokenId] = true;
     }
 
-    //function reSale(uint256 tokenId)
+    function buyFromIndividual(uint256 tokenId) public payable{
+        //set to a static value. This becomes an auction in future versions
+        require(msg.value == resalePrice[tokenId]);
+        
+    }
 
 }
