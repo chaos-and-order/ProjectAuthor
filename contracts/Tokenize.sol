@@ -32,6 +32,25 @@ contract Tokenize is ERC721,ERC721MetadataMintable, PublishBook {
     //tokenId to tokenIPFS mapping
     mapping(uint256 => tokenIPFS) private tokenData;  
     
+
+    /**
+     * @dev Gets the token name
+     * @return string representing the token name
+     */
+    function name() external view returns (string memory) {
+        return "DContentToken";
+    }
+
+    /**
+     * @dev Gets the token symbol
+     * @return string representing the token symbol
+     */
+    function symbol() external view returns (string memory) {
+        return "DCT";
+    }
+
+
+
        
     //tokenId a value that will be less than 10,000,000 
     function generateTokenID() private onlyMinter returns(uint256){
