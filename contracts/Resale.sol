@@ -87,8 +87,20 @@ contract Resale is Tokenize{
         //transfer of baton
         _tokenOwner[tokenId] = msg.sender;
         reSale[tokenId].isUpForResale = false;
-
-
     }
 
+
+    //Function to view the ipfshash of the token, the tokendata
+    /*
+    The real implementation wouldn't let the user view the tokendata
+    A digital handshake is what we need, between the token and the contract
+    where both agrees that the token holds the ipfshash. 
+    Tokendata must never be out in the open like this. 
+    But, alas.  
+    */
+    function viewTokenData(uint256 tokenId) public view returns(string){
+        require(_exists(tokenId));
+        require(_tokenOwner[tokenId] == msg.sender);
+        return tokenData[tokenId].tokenIPFS;
+    }
 }

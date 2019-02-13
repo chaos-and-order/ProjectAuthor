@@ -29,11 +29,10 @@ contract Tokenize is ERC721,ERC721MetadataMintable, PublishBook {
         string ipfsHash; 
     }
 
+    //tokenId to tokenIPFS mapping
     mapping(uint256 => tokenIPFS) private tokenData;  
     
-    //tokenID to bool value mapping, whether or not the given token is up for resale
-    //mapping(uint256 => bool) private isUpForResale;
-    
+       
     //tokenId a value that will be less than 10,000,000 
     function generateTokenID() private onlyMinter returns(uint256){
         tokenCounter++;
