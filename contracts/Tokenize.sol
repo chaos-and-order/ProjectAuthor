@@ -9,8 +9,6 @@ contract Tokenize is ERC721,ERC721MetadataMintable, PublishBook {
     uint256 isbn;   //Value to come in from the front end.
     uint256 tokenId;
     uint256 tokenCounter; //arbitrary counter to help generate unique tokenID
-    address tokenBuyer; //address of token purchaser via front-end.
-    address buyerAddress;
 
     // Mapping from owner to number of owned token
     mapping (address => Counters.Counter) private _ownedTokensCount;
@@ -119,8 +117,6 @@ contract Tokenize is ERC721,ERC721MetadataMintable, PublishBook {
         emit Sent(_payee, _amount, address(this).balance);
 
 
-        //TO DO: Make it usable for multiple Publishers!!  
-        //A mapping would suffice I guess.
     }
 
 
