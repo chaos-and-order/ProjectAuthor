@@ -77,6 +77,7 @@ contract Resale is Tokenize{
         sendTo(_tokenOwner[tokenId],msg.value - (msg.value*(commissionPercent/100)));
         
         _tokenOwner[tokenId] = msg.sender;
+        reSale[tokenId].isUpForResale = false;
 
 
     }
