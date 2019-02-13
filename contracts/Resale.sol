@@ -68,11 +68,11 @@ contract Resale is Tokenize{
         
         //set to a static value. This becomes an auction in future versions
         require(msg.value == reSale[tokenId].resalePrice);
-        
         //commission value retrieved from fileinfo via resale
         uint256 commissionPercent = fileinfo[reSale[tokenId].ISBN].saleCommission;
-        
-        //commission doesn't need to be transferred in real time.
+
+        //The full version: (Just for Laughs)
+        //publisherBalance[fileinfo[reSale[tokenId].ISBN].publisherAddress] += msg.value*((fileinfo[reSale[tokenId].ISBN].saleCommission)/100);
 
         //sendTo(fileinfo[reSale[tokenId].ISBN].publisherAddress, msg.value*(commissionPercent/100));
         //newer version of the above line of code.
@@ -81,6 +81,10 @@ contract Resale is Tokenize{
         //sendTo(_tokenOwner[tokenId],msg.value - (msg.value*(commissionPercent/100)));
         
         _tokenOwner[tokenId].transfer(msg.value - (msg.value*(commissionPercent/100)));
+        //updating token balances
+        _ownedTokensCount[_tokenOwner[tokenId]].decrement();
+        _ownedTokensCount[msg.sender].increment();
+        //transfer of baton
         _tokenOwner[tokenId] = msg.sender;
         reSale[tokenId].isUpForResale = false;
 
