@@ -26,22 +26,22 @@ contract Resale is Tokenize{
 
     //FUNCTIONS TO BE USED
 
-    function _exists(uint256 tokenId) internal view returns (bool);
+    // function _exists(uint256 tokenId) internal view returns (bool);
 
 
-    function ownerOf(uint256 tokenId) public view returns (address) ;
+    // function ownerOf(uint256 tokenId) public view returns (address) ;
 
-    function approve(address to, uint256 tokenId);
+    // function approve(address to, uint256 tokenId);
 
-    function getApproved(uint256 tokenId) public view returns (address);
+    // function getApproved(uint256 tokenId) public view returns (address);
 
-    function _isApprovedOrOwner(address spender, uint256 tokenId) internal view returns (bool);
+    // function _isApprovedOrOwner(address spender, uint256 tokenId) internal view returns (bool);
 
-    function transferFrom(address from, address to, uint256 tokenId);
+    // function transferFrom(address from, address to, uint256 tokenId);
 
-    function _transferFrom(address from, address to, uint256 tokenId);
+    // function _transferFrom(address from, address to, uint256 tokenId);
 
-    function _clearApproval(uint256 tokenId);
+    // function _clearApproval(uint256 tokenId);
 
 
     //RESALE CODE BEGINS
@@ -51,7 +51,7 @@ contract Resale is Tokenize{
     address from;
 */
 
-    
+    address payable private sendTo;
     
     
     function setResalePrice(uint256 newPrice, uint256 tokenId) public{
@@ -79,8 +79,10 @@ contract Resale is Tokenize{
         publisherBalance[fileinfo[reSale[tokenId].ISBN].publisherAddress] += msg.value*(commissionPercent/100);
 
         //sendTo(_tokenOwner[tokenId],msg.value - (msg.value*(commissionPercent/100)));
-        
-        _tokenOwner[tokenId].transfer(msg.value - (msg.value*(commissionPercent/100)));
+
+        //typecasting address to address payable before sending
+        sendTo = address(uint160(_tokenOwner[tokenId]));
+        sendTo.transfer(msg.value - (msg.value*(commissionPercent/100)));
         //updating token balances
         _ownedTokensCount[_tokenOwner[tokenId]].decrement();
         _ownedTokensCount[msg.sender].increment();
@@ -98,9 +100,9 @@ contract Resale is Tokenize{
     Tokendata must never be out in the open like this. 
     But, alas.  
     */
-    function viewTokenData(uint256 tokenId) public view returns(string){
+    function viewTokenData(uint256 tokenId) public view returns(string memory){
         require(_exists(tokenId));
         require(_tokenOwner[tokenId] == msg.sender);
-        return tokenData[tokenId].tokenIPFS;
+        return tokenData[tokenId].ipfsHash;
     }
 }

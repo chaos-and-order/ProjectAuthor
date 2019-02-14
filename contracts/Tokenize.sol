@@ -1,13 +1,12 @@
 pragma solidity ^0.5.0;
-import "openzeppelin-solidity/contracts/token/ERC721/ERC721.sol";
 import "openzeppelin-solidity/contracts/token/ERC721/ERC721MetadataMintable.sol";
 import "./PublishBook.sol";
 
 
-contract Tokenize is ERC721,ERC721MetadataMintable, PublishBook {
+contract Tokenize is ERC721MetadataMintable, PublishBook {
 
     uint256 isbn;   //Value to come in from the front end.
-    uint256 tokenId;
+    
     uint256 tokenCounter; //arbitrary counter to help generate unique tokenID
 
     // Mapping from owner to number of owned token
@@ -20,7 +19,7 @@ contract Tokenize is ERC721,ERC721MetadataMintable, PublishBook {
     }
 
     //tokenID to Reselling mapping
-    mapping (uint256 => Reselling) private reSale;
+    mapping (uint256 => Reselling) internal reSale;
 
     // a wild try. This will be the tokendata.
     struct tokenIPFS{
@@ -28,7 +27,7 @@ contract Tokenize is ERC721,ERC721MetadataMintable, PublishBook {
     }
 
     //tokenId to tokenIPFS mapping
-    mapping(uint256 => tokenIPFS) private tokenData;  
+    mapping(uint256 => tokenIPFS) internal tokenData;  
     
 
     /**
@@ -57,7 +56,7 @@ contract Tokenize is ERC721,ERC721MetadataMintable, PublishBook {
         return(tokenid);
     }
 
-    
+   
     function _mint(address to, uint256 tokenId) internal onlyMinter {
         require(to != address(0),"Address(0) Error !");
         require(!_exists(tokenId),"Token ID does not exist !");
@@ -86,44 +85,37 @@ contract Tokenize is ERC721,ERC721MetadataMintable, PublishBook {
         _tokenURIs[tokenId] = uri;
     }
 
-    /**
-     * @dev Function to mint tokens
-     * @param to The address that will receive the minted tokens.
-     * @param tokenId The token id to mint. NOT IN USE HERE
-     * @param tokenURI The token URI of the minted token.
-     * @return A boolean that indicates if the operation was successful.
-     */
-
+    
+ 
      //TO-DO: send struct as token metadata !!!
-    function mintWithTokenURI(address to, string memory tokenURI) public payable onlyMinter returns (bool) {
+    function mintWithTokenURI(address to, string memory tokenURI) public payable returns (bool) {
         //to revert back if the buyer doesn't have the price by the author.
-        require(to.value == setPrice[isbn],"Insufficient funds ! Please pay the price as set by the author.");
-        tokenId = generateTokenID();
+        require(msg.value == setPrice[isbn],"Insufficient funds ! Please pay the price as set by the author.");
+        uint256 tokenId = generateTokenID();
         _tokenOwner[tokenId] = to;       
         _mint(to, tokenId);
         _setTokenURI(tokenId, tokenURI);
 
         //publisher's balance gets updated    
-        publisherBalance[fileinfo[isbn].publisherAddress] += to.value;
+        publisherBalance[fileinfo[isbn].publisherAddress] += msg.value;
         return true;
-    }
+    }  
 
     //function to retreive funds from contract into publisher's account.
-    function sendTo(address _payee, uint256 _amount) public onlyOwner {
+    // function sendTo(address _payee, uint256 _amount) public onlyOwner {
 
-        require(_payee != address(0) && _payee != address(this),"Address(0) Erorr !");
-        require(_amount > 0 && _amount <= address(this).balance,"No funds in contract !");
-        _payee.transfer(_amount);
-        emit Sent(_payee, _amount, address(this).balance);
+    //     require(_payee != address(0) && _payee != address(this),"Address(0) Erorr !");
+    //     require(_amount > 0 && _amount <= address(this).balance,"No funds in contract !");
+    //     _payee.transfer(_amount);
+    //     emit Sent(_payee, _amount, address(this).balance);
 
 
-    }
+    // }
 
 
 
 
 
 }
-
 
 
