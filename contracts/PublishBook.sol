@@ -19,11 +19,6 @@ contract PublishBook {
     //for knowing the balance for each publisher
     mapping (address => uint256) private publisherBalance;
     
-    //to retrieve commission for a givenbook for secondary sales
-    //mapping(uint256 => uint256) private saleCommission; //in percent (0-100 integers)
-
-    //BookInfo private fileinfo;
-
     function addBookDetails (string memory _title, string memory _author, 
     string memory _ipfshash, uint256 _isbn, 
     uint256 _saleCommission) private{       
@@ -34,6 +29,12 @@ contract PublishBook {
         fileinfo[_isbn].saleCommission = _saleCommission;
     }  
 
+    //View Balance for a given publisher
+    function viewBalance() public view returns(uint256){
+        return publisherBalance[msg.sender];
+    }
+
+    //For a publisher to withdraw his earnings through sales and resales from the contract
     function withdrawBalance() public payable{
         (msg.sender).transfer(publisherBalance[msg.sender]);
         publisherBalance[msg.sender] = 0;

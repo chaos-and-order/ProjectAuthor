@@ -119,10 +119,6 @@ contract Tokenize is ERC721,ERC721MetadataMintable, PublishBook {
 
     }
 
-
-
-
-
 }
 
 

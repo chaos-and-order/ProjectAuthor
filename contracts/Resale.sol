@@ -15,47 +15,18 @@ contract Resale is Tokenize{
     }
     */
 
-    /*
-    NOT IMPLEMENTING THIS METHOD, BECAUSE THERE IS NO CONCEPT OF BALANCE HERE, 
-    ownedTokensCount uses Counter.counters  ;  gotta figure that out.
+
     function balanceOf(address owner) public view returns (uint256) {
-        require(owner != address(0));
+        require(owner != address(0), "Invalid address given!");
         return _ownedTokensCount[owner].current();
     }
-    */
 
-    //FUNCTIONS TO BE USED
-
-    function _exists(uint256 tokenId) internal view returns (bool);
-
-
-    function ownerOf(uint256 tokenId) public view returns (address) ;
-
-    function approve(address to, uint256 tokenId);
-
-    function getApproved(uint256 tokenId) public view returns (address);
-
-    function _isApprovedOrOwner(address spender, uint256 tokenId) internal view returns (bool);
-
-    function transferFrom(address from, address to, uint256 tokenId);
-
-    function _transferFrom(address from, address to, uint256 tokenId);
-
-    function _clearApproval(uint256 tokenId);
 
 
     //RESALE CODE BEGINS
-/*
-    uint256 tokenId;
-    address to;
-    address from;
-*/
-
-    
-    
-    
+            
     function setResalePrice(uint256 newPrice, uint256 tokenId) public{
-        require(_isApprovedOrOwner(msg.sender, tokenId));
+        require(ownerOf(tokenId)==msg.sender, "You are not the owner of this token!");
         reSale[tokenId].resalePrice = newPrice;
         reSale[tokenId].isUpForResale = true;
     }
@@ -64,29 +35,34 @@ contract Resale is Tokenize{
     //this is a one-on-one transaction. Needs to be an auction in future
     function buyFromIndividual(uint256 tokenId) public payable{
         //works only if the given token is up for sale
-        require(reSale[tokenId].isUpForResale == true);
+        require(reSale[tokenId].isUpForResale == true, "This token hasn't been put for sale by the owner");
         
         //set to a static value. This becomes an auction in future versions
-        require(msg.value == reSale[tokenId].resalePrice);
-        //commission value retrieved from fileinfo via resale
-        uint256 commissionPercent = fileinfo[reSale[tokenId].ISBN].saleCommission;
+        require(msg.value == reSale[tokenId].resalePrice, "Your price doesn't match the price given by the tokenOwner");
 
-        //The full version: (Just for Laughs)
-        //publisherBalance[fileinfo[reSale[tokenId].ISBN].publisherAddress] += msg.value*((fileinfo[reSale[tokenId].ISBN].saleCommission)/100);
+        //Finding the commissionPercent from fileinfo, and then finding the concrete value of it 
+        //from msg.value and then storing in publisherBalance 
+        publisherBalance[fileinfo[reSale[tokenId].ISBN].publisherAddress] += msg.value*((fileinfo[reSale[tokenId].ISBN].saleCommission)/100);
 
-        //sendTo(fileinfo[reSale[tokenId].ISBN].publisherAddress, msg.value*(commissionPercent/100));
-        //newer version of the above line of code.
-        publisherBalance[fileinfo[reSale[tokenId].ISBN].publisherAddress] += msg.value*(commissionPercent/100);
-
-        //sendTo(_tokenOwner[tokenId],msg.value - (msg.value*(commissionPercent/100)));
-        
-        _tokenOwner[tokenId].transfer(msg.value - (msg.value*(commissionPercent/100)));
-        //updating token balances
+        //finding the seller's cut, and instantly transferring it to the seller        
+        _tokenOwner[tokenId].transfer(msg.value - (msg.value*((fileinfo[reSale[tokenId].ISBN].saleCommission)/100)));
+        //updating token balances for both seller and buyer
         _ownedTokensCount[_tokenOwner[tokenId]].decrement();
         _ownedTokensCount[msg.sender].increment();
         //transfer of baton
+        emit Transfer(_tokenOwner[tokenId], msg.sender, tokenId);
         _tokenOwner[tokenId] = msg.sender;
         reSale[tokenId].isUpForResale = false;
+    }
+
+    //To transfer a token freely to an address. Only owner of the said token can do it.
+    function transfer(address _to, uint256 _tokenId) public{
+        require(ownerOf(_tokenId)==msg.sender, "You are not the owner of this token!");
+        _tokenOwner[_tokenId] = _to;
+        _ownedTokensCount[msg.sender].decrement();
+        _ownedTokensCount[_to].increment();
+        reSale[_tokenId].isUpForResale = false;
+        emit Transfer(msg.sender, _to, _tokenId);
     }
 
 
@@ -99,8 +75,20 @@ contract Resale is Tokenize{
     But, alas.  
     */
     function viewTokenData(uint256 tokenId) public view returns(string){
-        require(_exists(tokenId));
-        require(_tokenOwner[tokenId] == msg.sender);
+        require(_exists(tokenId), "Token doesn't exist!");
+        require(ownerOf(tokenId)==msg.sender, "You are not the owner of this token!");
         return tokenData[tokenId].tokenIPFS;
     }
+/*
+    TO DO if time allows: 
+    1.
+    scrap the above viewTokenData.
+    user gets access to file solely depending on 
+    require(_tokenOwner[tokenId] == msg.sender);
+    because the whole gimmick is on this mapping. 
+    So we don't need to provide ipfsHash inside the token. Solves that issue.
+
+    2.
+    add tokenmetadata(), where stuff (trinkets) that makes the token unique are added.
+*/
 }
