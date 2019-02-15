@@ -45,7 +45,9 @@ contract Resale is Tokenize{
         publisherBalance[fileinfo[reSale[tokenId].ISBN].publisherAddress] += msg.value*((fileinfo[reSale[tokenId].ISBN].saleCommission)/100);
 
         //finding the seller's cut, and instantly transferring it to the seller        
-        _tokenOwner[tokenId].transfer(msg.value - (msg.value*((fileinfo[reSale[tokenId].ISBN].saleCommission)/100)));
+        address payable sendTo;
+        sendTo = address(uint160(_tokenOwner[tokenId]));       
+        sendTo.transfer(msg.value - (msg.value*((fileinfo[reSale[tokenId].ISBN].saleCommission)/100)));
         //updating token balances for both seller and buyer
         _ownedTokensCount[_tokenOwner[tokenId]].decrement();
         _ownedTokensCount[msg.sender].increment();
@@ -77,7 +79,7 @@ contract Resale is Tokenize{
     function viewTokenData(uint256 tokenId) public view returns(string){
         require(_exists(tokenId), "Token doesn't exist!");
         require(ownerOf(tokenId)==msg.sender, "You are not the owner of this token!");
-        return tokenData[tokenId].tokenIPFS;
+        return tokenData[tokenId].ipfsHash;
     }
 /*
     TO DO if time allows: 
