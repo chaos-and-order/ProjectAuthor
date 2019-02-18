@@ -26,7 +26,7 @@ contract Resale is Tokenize{
             
     function setResalePrice(uint256 newPrice, uint256 tokenId) public{
         require(ownerOf(tokenId)==msg.sender, "You are not the owner of this token!");
-        reSale[tokenId].resalePrice = newPrice;
+        reSale[tokenId].resalePrice = newPrice*1 wei;
         reSale[tokenId].isUpForResale = true;
     }
 
