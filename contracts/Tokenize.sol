@@ -78,14 +78,14 @@ contract Tokenize is PublishBook {
 
        
     //tokenId a value that will be less than 10,000,000 
-    function generateTokenID() private returns(uint256){
+    function generateTokenID(uint256 isbn) private returns(uint256){
         tokenCounter++;
         uint256 tokenid = uint256(keccak256(abi.encodePacked(isbn, now,tokenCounter))) % 10000000;
         return(tokenid);
     }
 
    
-    function _mint(address to, uint256 tokenId) internal {
+    function _mint(address to, uint256 tokenId, uint256 isbn) internal {
         require(to != address(0),"Address(0) Error !");
         _tokenOwner[tokenId] = to;
         require(!_exists(tokenId),"Token ID does not exist !");
@@ -119,7 +119,7 @@ contract Tokenize is PublishBook {
         fileinfo[_isbn].ipfsHash = _ipfshash;
         fileinfo[_isbn].publisherAddress = msg.sender;
         fileinfo[_isbn].saleCommission = _saleCommission;
-        setPrice[_isbn]= _price*1 wei;
+        setPrice[_isbn] = _price*1 wei;
   
     }  
 
@@ -133,9 +133,10 @@ contract Tokenize is PublishBook {
      //TO-DO: send struct as token metadata !!!
     function primaryBuy(uint isbn) public payable returns (bool) {
         //to revert back if the buyer doesn't have the price by the author.
+        require(fileinfo[isbn].publisherAddress != address(0),"ISBN does not exist !");
         require(msg.value == setPrice[isbn],"Insufficient funds ! Please pay the price as set by the author.");
-        uint256 tokenId = generateTokenID();       
-        _mint(msg.sender, tokenId);
+        uint256 tokenId = generateTokenID(isbn);       
+        _mint(msg.sender, tokenId,isbn);
         // _setTokenURI(tokenId, tokenURI);
 
         //publisher's balance gets updated    
