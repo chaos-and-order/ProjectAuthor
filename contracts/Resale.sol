@@ -14,6 +14,8 @@ contract Resale is Tokenize{
     }
     */
 
+    event ResalePriceSet(uint256 indexed resalePrice, uint256 indexed tokenId);
+
 
     function balanceOf(address owner) public view returns (uint256) {
         require(owner != address(0), "Invalid address given!");
@@ -28,6 +30,7 @@ contract Resale is Tokenize{
         require(ownerOf(tokenId)==msg.sender, "You are not the owner of this token!");
         reSale[tokenId].resalePrice = newPrice*1 wei;
         reSale[tokenId].isUpForResale = true;
+        emit ResalePriceSet(newPrice, tokenId);
     }
 
 

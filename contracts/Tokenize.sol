@@ -27,8 +27,6 @@ contract Tokenize is PublishBook {
 
 
     event Transfer(address indexed from, address indexed to, uint256 indexed tokenId);
-
-    uint256 isbn;   //Value to come in from the front end.
     
     uint256 tokenCounter; //arbitrary counter to help generate unique tokenID
 
@@ -126,14 +124,14 @@ contract Tokenize is PublishBook {
     }  
 
     function withdrawBalance() public payable{
-        require(publisherBalance[msg.sender]!=0, "You don't have any balance to withdraw");
+        require(publisherBalance[msg.sender]!=0, "You don't have any balance to withdraw");    
         (msg.sender).transfer(publisherBalance[msg.sender]);
         publisherBalance[msg.sender] = 0;
     }
 
  
      //TO-DO: send struct as token metadata !!!
-    function primaryBuy(uint256 isbn) public payable returns (bool) {
+    function primaryBuy(uint isbn) public payable returns (bool) {
         //to revert back if the buyer doesn't have the price by the author.
         require(msg.value == setPrice[isbn],"Insufficient funds ! Please pay the price as set by the author.");
         uint256 tokenId = generateTokenID();       
