@@ -126,6 +126,7 @@ contract Tokenize is PublishBook {
     }  
 
     function withdrawBalance() public payable{
+        require(publisherBalance[msg.sender]!=0, "You don't have any balance to withdraw");
         (msg.sender).transfer(publisherBalance[msg.sender]);
         publisherBalance[msg.sender] = 0;
     }
