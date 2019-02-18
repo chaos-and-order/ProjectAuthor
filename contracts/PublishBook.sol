@@ -12,32 +12,34 @@ contract PublishBook {
         uint256 saleCommission; //in percent (0-100 integers)
     }
 
-    mapping(uint256 => BookInfo) private fileinfo; //ISBN is the keyvalue, taken as int 
+    mapping(uint256 => BookInfo) internal fileinfo; //ISBN is the keyvalue, taken as int 
 
-    mapping (uint256 => uint256) private setPrice; //ISBN is the keyvalue, taken as int
+    mapping (uint256 => uint256) internal setPrice; //ISBN is the keyvalue, taken as int
 
     //for knowing the balance for each publisher
-    mapping (address => uint256) private publisherBalance;
+    mapping (address => uint256) internal publisherBalance;
     
-    function addBookDetails (string memory _title, string memory _author, 
-    string memory _ipfshash, uint256 _isbn, 
-    uint256 _saleCommission) private{       
-        fileinfo[_isbn].bookTitle = _title;
-        fileinfo[_isbn].authorName = _author;
-        fileinfo[_isbn].ipfsHash = _ipfshash;
-        fileinfo[_isbn].publisherAddress = msg.sender;
-        fileinfo[_isbn].saleCommission = _saleCommission;
-    }  
+    //to retrieve commission for a givenbook for secondary sales
+    //mapping(uint256 => uint256) private saleCommission; //in percent (0-100 integers)
 
-    //View Balance for a given publisher
-    function viewBalance() public view returns(uint256){
-        return publisherBalance[msg.sender];
-    }
+    //BookInfo private fileinfo;
 
-    //For a publisher to withdraw his earnings through sales and resales from the contract
-    function withdrawBalance() public payable{
-        (msg.sender).transfer(publisherBalance[msg.sender]);
-        publisherBalance[msg.sender] = 0;
-    }
+    // function addBookDetails (string memory _title, string memory _author, string memory _ipfshash, uint256 _isbn, uint256 _saleCommission) internal;
+
+
+    // function addBookDetails (string memory _title, string memory _author, 
+    // string memory _ipfshash, uint256 _isbn, 
+    // uint256 _saleCommission) private{       
+    //     fileinfo[_isbn].bookTitle = _title;
+    //     fileinfo[_isbn].authorName = _author;
+    //     fileinfo[_isbn].ipfsHash = _ipfshash;
+    //     fileinfo[_isbn].publisherAddress = msg.sender;
+    //     fileinfo[_isbn].saleCommission = _saleCommission;
+    // }  
+
+    // function withdrawBalance() public payable{
+    //     (msg.sender).transfer(publisherBalance[msg.sender]);
+    //     publisherBalance[msg.sender] = 0;
+    // }
 
 }

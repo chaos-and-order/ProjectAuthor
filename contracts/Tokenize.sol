@@ -1,16 +1,37 @@
 pragma solidity ^0.5.0;
-import "openzeppelin-solidity/contracts/token/ERC721/ERC721MetadataMintable.sol";
 import "./PublishBook.sol";
+import "./Address.sol";
+import "./SafeMath.sol";
+import "./Counters.sol";
 
 
-contract Tokenize is ERC721MetadataMintable, PublishBook {
+contract Tokenize is PublishBook {
+
+    using SafeMath for uint256;
+    using Address for address;
+    using Counters for Counters.Counter;
+
+    // Equals to `bytes4(keccak256("onERC721Received(address,address,uint256,bytes)"))`
+    // which can be also obtained as `IERC721Receiver(0).onERC721Received.selector`
+    bytes4 private constant _ERC721_RECEIVED = 0x150b7a02;
+
+    // Mapping from token ID to owner
+    mapping (uint256 => address) internal _tokenOwner;
+
+    // Mapping from token ID to approved address
+    mapping (uint256 => address) internal _tokenApprovals;
+
+    // Mapping from owner to number of owned token
+    mapping (address => Counters.Counter) internal _ownedTokensCount;
+
+
+
+    event Transfer(address indexed from, address indexed to, uint256 indexed tokenId);
 
     uint256 isbn;   //Value to come in from the front end.
     
     uint256 tokenCounter; //arbitrary counter to help generate unique tokenID
 
-    // Mapping from owner to number of owned token
-    mapping (address => Counters.Counter) private _ownedTokensCount;
 
     struct Reselling{
         uint256 resalePrice;
@@ -46,18 +67,27 @@ contract Tokenize is ERC721MetadataMintable, PublishBook {
         return "DCT";
     }
 
+    function _exists(uint256 tokenId) internal view returns (bool) {
+        address owner = _tokenOwner[tokenId];
+        return owner != address(0);
+    }
 
+    function ownerOf(uint256 tokenId) public view returns (address) {
+        address owner = _tokenOwner[tokenId];
+        require(owner != address(0));
+        return owner;
+    }
 
        
     //tokenId a value that will be less than 10,000,000 
-    function generateTokenID() private onlyMinter returns(uint256){
+    function generateTokenID() private returns(uint256){
         tokenCounter++;
         uint256 tokenid = uint256(keccak256(abi.encodePacked(isbn, now,tokenCounter))) % 10000000;
         return(tokenid);
     }
 
    
-    function _mint(address to, uint256 tokenId) internal onlyMinter {
+    function _mint(address to, uint256 tokenId) internal {
         require(to != address(0),"Address(0) Error !");
         require(!_exists(tokenId),"Token ID does not exist !");
         _tokenOwner[tokenId] = to;
@@ -74,18 +104,30 @@ contract Tokenize is ERC721MetadataMintable, PublishBook {
     }
 
 
-    /**
-     * @dev Internal function to set the token URI for a given token
-     * Reverts if the token ID does not exist
-     * @param tokenId uint256 ID of the token to set its URI
-     * @param uri string URI to assign
-     */
-    function _setTokenURI(uint256 tokenId, string memory uri) internal {
-        require(_exists(tokenId),"Token ID does not exist !");
-        _tokenURIs[tokenId] = uri;
+    // /**
+    //  * @dev Internal function to set the token URI for a given token
+    //  * Reverts if the token ID does not exist
+    //  * @param tokenId uint256 ID of the token to set its URI
+    //  * @param uri string URI to assign
+    //  */
+    // function _setTokenURI(uint256 tokenId, string memory uri) internal {
+    //     require(_exists(tokenId),"Token ID does not exist !");
+    //     _tokenURIs[tokenId] = uri;
+    // }
+
+    function addBookDetails (string memory _title, string memory _author, string memory _ipfshash, uint256 _isbn, uint256 _saleCommission) internal{       
+        fileinfo[_isbn].bookTitle = _title;
+        fileinfo[_isbn].authorName = _author;
+        fileinfo[_isbn].ipfsHash = _ipfshash;
+        fileinfo[_isbn].publisherAddress = msg.sender;
+        fileinfo[_isbn].saleCommission = _saleCommission;
+    }  
+
+    function withdrawBalance() public payable{
+        (msg.sender).transfer(publisherBalance[msg.sender]);
+        publisherBalance[msg.sender] = 0;
     }
 
-    
  
      //TO-DO: send struct as token metadata !!!
     function mintWithTokenURI(address to, string memory tokenURI) public payable returns (bool) {
@@ -94,7 +136,7 @@ contract Tokenize is ERC721MetadataMintable, PublishBook {
         uint256 tokenId = generateTokenID();
         _tokenOwner[tokenId] = to;       
         _mint(to, tokenId);
-        _setTokenURI(tokenId, tokenURI);
+        // _setTokenURI(tokenId, tokenURI);
 
         //publisher's balance gets updated    
         publisherBalance[fileinfo[isbn].publisherAddress] += msg.value;

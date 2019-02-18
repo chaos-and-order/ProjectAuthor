@@ -1,7 +1,6 @@
 pragma solidity ^0.5.0;
 import "./Tokenize.sol";
 
-
 contract Resale is Tokenize{
 
 
@@ -44,7 +43,7 @@ contract Resale is Tokenize{
         //from msg.value and then storing in publisherBalance 
         publisherBalance[fileinfo[reSale[tokenId].ISBN].publisherAddress] += msg.value*((fileinfo[reSale[tokenId].ISBN].saleCommission)/100);
 
-        //finding the seller's cut, and instantly transferring it to the seller        
+        //finding the seller's cut, and instantly transferring it to the seller 
         address payable sendTo;
         sendTo = address(uint160(_tokenOwner[tokenId]));       
         sendTo.transfer(msg.value - (msg.value*((fileinfo[reSale[tokenId].ISBN].saleCommission)/100)));
@@ -76,7 +75,7 @@ contract Resale is Tokenize{
     Tokendata must never be out in the open like this. 
     But, alas.  
     */
-    function viewTokenData(uint256 tokenId) public view returns(string){
+    function viewTokenData(uint256 tokenId) public view returns(string memory){
         require(_exists(tokenId), "Token doesn't exist!");
         require(ownerOf(tokenId)==msg.sender, "You are not the owner of this token!");
         return tokenData[tokenId].ipfsHash;
