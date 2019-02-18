@@ -89,8 +89,8 @@ contract Tokenize is PublishBook {
    
     function _mint(address to, uint256 tokenId) internal {
         require(to != address(0),"Address(0) Error !");
-        require(!_exists(tokenId),"Token ID does not exist !");
         _tokenOwner[tokenId] = to;
+        require(!_exists(tokenId),"Token ID does not exist !");
         _ownedTokensCount[to].increment();
 
         //resalePrice set to initial MRP by default
@@ -132,12 +132,11 @@ contract Tokenize is PublishBook {
 
  
      //TO-DO: send struct as token metadata !!!
-    function mintWithTokenURI(address to, string memory tokenURI) public payable returns (bool) {
+    function primaryBuy(uint isbn) public payable returns (bool) {
         //to revert back if the buyer doesn't have the price by the author.
         require(msg.value == setPrice[isbn],"Insufficient funds ! Please pay the price as set by the author.");
-        uint256 tokenId = generateTokenID();
-        _tokenOwner[tokenId] = to;       
-        _mint(to, tokenId);
+        uint256 tokenId = generateTokenID();       
+        _mint(msg.sender, tokenId);
         // _setTokenURI(tokenId, tokenURI);
 
         //publisher's balance gets updated    
