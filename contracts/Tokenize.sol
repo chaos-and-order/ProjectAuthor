@@ -133,7 +133,7 @@ contract Tokenize is PublishBook {
 
  
      //TO-DO: send struct as token metadata !!!
-    function primaryBuy(uint isbn) public payable returns (bool) {
+    function primaryBuy(uint256 isbn) public payable returns (bool) {
         //to revert back if the buyer doesn't have the price by the author.
         require(msg.value == setPrice[isbn],"Insufficient funds ! Please pay the price as set by the author.");
         uint256 tokenId = generateTokenID();       
