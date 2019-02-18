@@ -115,12 +115,14 @@ contract Tokenize is PublishBook {
     //     _tokenURIs[tokenId] = uri;
     // }
 
-    function addBookDetails (string memory _title, string memory _author, string memory _ipfshash, uint256 _isbn, uint256 _saleCommission) internal{       
+    function addBookDetails (string memory _title, string memory _author, string memory _ipfshash, uint256 _isbn, uint256 _price, uint256 _saleCommission) public {       
         fileinfo[_isbn].bookTitle = _title;
         fileinfo[_isbn].authorName = _author;
         fileinfo[_isbn].ipfsHash = _ipfshash;
         fileinfo[_isbn].publisherAddress = msg.sender;
         fileinfo[_isbn].saleCommission = _saleCommission;
+        setPrice[_isbn]= _price*1 wei;
+  
     }  
 
     function withdrawBalance() public payable{
