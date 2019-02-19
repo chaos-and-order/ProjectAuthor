@@ -5,8 +5,6 @@ contract PublishBook {
     
 
     struct BookInfo{
-        string bookTitle;
-        string authorName;
         string ipfsHash;
         address publisherAddress;  //Payable address ??
         uint256 saleCommission; //in percent (0-100 integers)
