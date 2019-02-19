@@ -27,6 +27,7 @@ contract Tokenize is PublishBook {
 
 
     event Transfer(address indexed from, address indexed to, uint256 indexed tokenId);
+    event BookPublished(address indexed publisher, uint256 indexed isbn);
     
     uint256 tokenCounter; //arbitrary counter to help generate unique tokenID
 
@@ -120,6 +121,7 @@ contract Tokenize is PublishBook {
         fileinfo[_isbn].publisherAddress = msg.sender;
         fileinfo[_isbn].saleCommission = _saleCommission;
         setPrice[_isbn] = _price*1 wei;
+        emit BookPublished(msg.sender, _isbn);
   
     }  
 
