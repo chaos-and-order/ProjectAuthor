@@ -89,7 +89,7 @@ contract Tokenize is PublishBook {
     function _mint(address to, uint256 tokenId, uint256 isbn) internal {
         require(to != address(0),"Address(0) Error !");
         _tokenOwner[tokenId] = to;
-        require(!_exists(tokenId),"Token ID does not exist !");
+        require(_exists(tokenId),"Token ID does not exist !");
         _ownedTokensCount[to].increment();
 
         //resalePrice set to initial MRP by default
