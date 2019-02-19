@@ -88,7 +88,7 @@ contract Tokenize is PublishBook {
    
     function _mint(address to, uint256 tokenId, uint256 isbn) internal {
         require(to != address(0),"Address(0) Error !");
-        require(_exists(tokenId),"Token ID does not exist !");
+        require(!_exists(tokenId),"Token ID already exists !");
         _tokenOwner[tokenId] = to;
         _ownedTokensCount[to].increment();
 
