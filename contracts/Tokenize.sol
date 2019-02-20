@@ -115,6 +115,7 @@ contract Tokenize is PublishBook {
     // }
 
     function addBookDetails (string memory _ipfshash, uint256 _isbn, uint256 _price, uint256 _saleCommission) public {        fileinfo[_isbn].ipfsHash = _ipfshash;
+        require(fileinfo[_isbn].publisherAddress==address(0), "This book has already been published!");
         fileinfo[_isbn].ipfsHash = _ipfshash;
         fileinfo[_isbn].publisherAddress = msg.sender;
         fileinfo[_isbn].saleCommission = _saleCommission;
