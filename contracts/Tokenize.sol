@@ -41,7 +41,7 @@ contract Tokenize is PublishBook {
     //tokenID to Reselling mapping
     mapping (uint256 => Reselling) internal reSale;
 
-    // a wild try. This will be the tokendata.
+    //This will be the tokendata.
     struct tokenIPFS{
         string ipfsHash; 
     }
@@ -66,11 +66,13 @@ contract Tokenize is PublishBook {
         return "DCT";
     }
 
+    //function to check if tokenId exists with a user
     function _exists(uint256 tokenId) internal view returns (bool) {
         address owner = _tokenOwner[tokenId];
         return owner != address(0);
     }
 
+    //function to check who the owner of a token is
     function ownerOf(uint256 tokenId) public view returns (address) {
         address owner = _tokenOwner[tokenId];
         require(owner != address(0));
@@ -85,7 +87,7 @@ contract Tokenize is PublishBook {
         return(tokenid);
     }
 
-   
+   //function that creates the token
     function _mint(address to, uint256 tokenId, uint256 isbn) internal {
         require(to != address(0),"Address(0) Error !");
         require(!_exists(tokenId),"Token ID already exists !");
@@ -103,18 +105,8 @@ contract Tokenize is PublishBook {
     }
 
 
-    // /**
-    //  * @dev Internal function to set the token URI for a given token
-    //  * Reverts if the token ID does not exist
-    //  * @param tokenId uint256 ID of the token to set its URI
-    //  * @param uri string URI to assign
-    //  */
-    // function _setTokenURI(uint256 tokenId, string memory uri) internal {
-    //     require(_exists(tokenId),"Token ID does not exist !");
-    //     _tokenURIs[tokenId] = uri;
-    // }
-
-    function addBookDetails (string memory _ipfshash, uint256 _isbn, uint256 _price, uint256 _saleCommission) public {        fileinfo[_isbn].ipfsHash = _ipfshash;
+    //function to add book details into the chain i.e. publish the book
+    function addBookDetails (string memory _ipfshash, uint256 _isbn, uint256 _price, uint256 _saleCommission) public {
         require(fileinfo[_isbn].publisherAddress==address(0), "This book has already been published!");
         fileinfo[_isbn].ipfsHash = _ipfshash;
         fileinfo[_isbn].publisherAddress = msg.sender;
@@ -124,36 +116,24 @@ contract Tokenize is PublishBook {
   
     }  
 
+    //function to get all cash stored in contract back into the respective owners' account
     function withdrawBalance() public payable{
         require(publisherBalance[msg.sender]!=0, "You don't have any balance to withdraw");    
         (msg.sender).transfer(publisherBalance[msg.sender]);
         publisherBalance[msg.sender] = 0;
     }
 
- 
-     //TO-DO: send struct as token metadata !!!
+    //function that executes the first purchase of token from the contract
     function primaryBuy(uint isbn) public payable returns (bool) {
         //to revert back if the buyer doesn't have the price by the author.
         require(fileinfo[isbn].publisherAddress != address(0),"ISBN does not exist !");
         require(msg.value == setPrice[isbn],"Insufficient funds ! Please pay the price as set by the author.");
         uint256 tokenId = generateTokenID(isbn);       
         _mint(msg.sender, tokenId,isbn);
-        // _setTokenURI(tokenId, tokenURI);
-
         //publisher's balance gets updated    
         publisherBalance[fileinfo[isbn].publisherAddress] += msg.value;
         return true;
     }  
 
-    //function to retreive funds from contract into publisher's account.
-    // function sendTo(address _payee, uint256 _amount) public onlyOwner {
-
-    //     require(_payee != address(0) && _payee != address(this),"Address(0) Erorr !");
-    //     require(_amount > 0 && _amount <= address(this).balance,"No funds in contract !");
-    //     _payee.transfer(_amount);
-    //     emit Sent(_payee, _amount, address(this).balance);
-
-
-    // }
 
 }

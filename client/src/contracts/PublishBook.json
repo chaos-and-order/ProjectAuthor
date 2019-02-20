@@ -1,0 +1,663 @@
+{
+  "contractName": "PublishBook",
+  "abi": [],
+  "bytecode": "0x6080604052348015600f57600080fd5b50603580601d6000396000f3fe6080604052600080fdfea165627a7a72305820f4b8431c2b0e46c96a8c5b2f54660f40f589d7364fe91f7387c891538050f50a0029",
+  "deployedBytecode": "0x6080604052600080fdfea165627a7a72305820f4b8431c2b0e46c96a8c5b2f54660f40f589d7364fe91f7387c891538050f50a0029",
+  "sourceMap": "25:1511:3:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;25:1511:3;;;;;;;",
+  "deployedSourceMap": "25:1511:3:-;;;;;",
+  "source": "pragma solidity ^0.5.0;\n\ncontract PublishBook {\n\n    \n\n    struct BookInfo{\n        string bookTitle;\n        string authorName;\n        string ipfsHash;\n        address publisherAddress;  //Payable address ??\n        uint256 saleCommission; //in percent (0-100 integers)\n    }\n\n    mapping(uint256 => BookInfo) internal fileinfo; //ISBN is the keyvalue, taken as int \n\n    mapping (uint256 => uint256) internal setPrice; //ISBN is the keyvalue, taken as int\n\n    //for knowing the balance for each publisher\n    mapping (address => uint256) internal publisherBalance;\n    \n    //to retrieve commission for a givenbook for secondary sales\n    //mapping(uint256 => uint256) private saleCommission; //in percent (0-100 integers)\n\n    //BookInfo private fileinfo;\n\n    // function addBookDetails (string memory _title, string memory _author, string memory _ipfshash, uint256 _isbn, uint256 _saleCommission) internal;\n\n\n    // function addBookDetails (string memory _title, string memory _author, \n    // string memory _ipfshash, uint256 _isbn, \n    // uint256 _saleCommission) private{       \n    //     fileinfo[_isbn].bookTitle = _title;\n    //     fileinfo[_isbn].authorName = _author;\n    //     fileinfo[_isbn].ipfsHash = _ipfshash;\n    //     fileinfo[_isbn].publisherAddress = msg.sender;\n    //     fileinfo[_isbn].saleCommission = _saleCommission;\n    // }  \n\n    // function withdrawBalance() public payable{\n    //     (msg.sender).transfer(publisherBalance[msg.sender]);\n    //     publisherBalance[msg.sender] = 0;\n    // }\n\n}",
+  "sourcePath": "/home/lakhan/Documents/mydapp/contracts/PublishBook.sol",
+  "ast": {
+    "absolutePath": "/home/lakhan/Documents/mydapp/contracts/PublishBook.sol",
+    "exportedSymbols": {
+      "PublishBook": [
+        150
+      ]
+    },
+    "id": 151,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 126,
+        "literals": [
+          "solidity",
+          "^",
+          "0.5",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:23:3"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 150,
+        "linearizedBaseContracts": [
+          150
+        ],
+        "name": "PublishBook",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "canonicalName": "PublishBook.BookInfo",
+            "id": 137,
+            "members": [
+              {
+                "constant": false,
+                "id": 128,
+                "name": "bookTitle",
+                "nodeType": "VariableDeclaration",
+                "scope": 137,
+                "src": "84:16:3",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_string_storage_ptr",
+                  "typeString": "string"
+                },
+                "typeName": {
+                  "id": 127,
+                  "name": "string",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "84:6:3",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_storage_ptr",
+                    "typeString": "string"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 130,
+                "name": "authorName",
+                "nodeType": "VariableDeclaration",
+                "scope": 137,
+                "src": "110:17:3",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_string_storage_ptr",
+                  "typeString": "string"
+                },
+                "typeName": {
+                  "id": 129,
+                  "name": "string",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "110:6:3",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_storage_ptr",
+                    "typeString": "string"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 132,
+                "name": "ipfsHash",
+                "nodeType": "VariableDeclaration",
+                "scope": 137,
+                "src": "137:15:3",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_string_storage_ptr",
+                  "typeString": "string"
+                },
+                "typeName": {
+                  "id": 131,
+                  "name": "string",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "137:6:3",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_storage_ptr",
+                    "typeString": "string"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 134,
+                "name": "publisherAddress",
+                "nodeType": "VariableDeclaration",
+                "scope": 137,
+                "src": "162:24:3",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 133,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "162:7:3",
+                  "stateMutability": "nonpayable",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 136,
+                "name": "saleCommission",
+                "nodeType": "VariableDeclaration",
+                "scope": 137,
+                "src": "218:22:3",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 135,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "218:7:3",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "BookInfo",
+            "nodeType": "StructDefinition",
+            "scope": 150,
+            "src": "59:218:3",
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "id": 141,
+            "name": "fileinfo",
+            "nodeType": "VariableDeclaration",
+            "scope": 150,
+            "src": "283:46:3",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_BookInfo_$137_storage_$",
+              "typeString": "mapping(uint256 => struct PublishBook.BookInfo)"
+            },
+            "typeName": {
+              "id": 140,
+              "keyType": {
+                "id": 138,
+                "name": "uint256",
+                "nodeType": "ElementaryTypeName",
+                "src": "291:7:3",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                }
+              },
+              "nodeType": "Mapping",
+              "src": "283:28:3",
+              "typeDescriptions": {
+                "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_BookInfo_$137_storage_$",
+                "typeString": "mapping(uint256 => struct PublishBook.BookInfo)"
+              },
+              "valueType": {
+                "contractScope": null,
+                "id": 139,
+                "name": "BookInfo",
+                "nodeType": "UserDefinedTypeName",
+                "referencedDeclaration": 137,
+                "src": "302:8:3",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_BookInfo_$137_storage_ptr",
+                  "typeString": "struct PublishBook.BookInfo"
+                }
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "constant": false,
+            "id": 145,
+            "name": "setPrice",
+            "nodeType": "VariableDeclaration",
+            "scope": 150,
+            "src": "374:46:3",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_mapping$_t_uint256_$_t_uint256_$",
+              "typeString": "mapping(uint256 => uint256)"
+            },
+            "typeName": {
+              "id": 144,
+              "keyType": {
+                "id": 142,
+                "name": "uint256",
+                "nodeType": "ElementaryTypeName",
+                "src": "383:7:3",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                }
+              },
+              "nodeType": "Mapping",
+              "src": "374:28:3",
+              "typeDescriptions": {
+                "typeIdentifier": "t_mapping$_t_uint256_$_t_uint256_$",
+                "typeString": "mapping(uint256 => uint256)"
+              },
+              "valueType": {
+                "id": 143,
+                "name": "uint256",
+                "nodeType": "ElementaryTypeName",
+                "src": "394:7:3",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                }
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "constant": false,
+            "id": 149,
+            "name": "publisherBalance",
+            "nodeType": "VariableDeclaration",
+            "scope": 150,
+            "src": "513:54:3",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+              "typeString": "mapping(address => uint256)"
+            },
+            "typeName": {
+              "id": 148,
+              "keyType": {
+                "id": 146,
+                "name": "address",
+                "nodeType": "ElementaryTypeName",
+                "src": "522:7:3",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                }
+              },
+              "nodeType": "Mapping",
+              "src": "513:28:3",
+              "typeDescriptions": {
+                "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+                "typeString": "mapping(address => uint256)"
+              },
+              "valueType": {
+                "id": 147,
+                "name": "uint256",
+                "nodeType": "ElementaryTypeName",
+                "src": "533:7:3",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                }
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          }
+        ],
+        "scope": 151,
+        "src": "25:1511:3"
+      }
+    ],
+    "src": "0:1536:3"
+  },
+  "legacyAST": {
+    "absolutePath": "/home/lakhan/Documents/mydapp/contracts/PublishBook.sol",
+    "exportedSymbols": {
+      "PublishBook": [
+        150
+      ]
+    },
+    "id": 151,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 126,
+        "literals": [
+          "solidity",
+          "^",
+          "0.5",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:23:3"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 150,
+        "linearizedBaseContracts": [
+          150
+        ],
+        "name": "PublishBook",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "canonicalName": "PublishBook.BookInfo",
+            "id": 137,
+            "members": [
+              {
+                "constant": false,
+                "id": 128,
+                "name": "bookTitle",
+                "nodeType": "VariableDeclaration",
+                "scope": 137,
+                "src": "84:16:3",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_string_storage_ptr",
+                  "typeString": "string"
+                },
+                "typeName": {
+                  "id": 127,
+                  "name": "string",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "84:6:3",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_storage_ptr",
+                    "typeString": "string"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 130,
+                "name": "authorName",
+                "nodeType": "VariableDeclaration",
+                "scope": 137,
+                "src": "110:17:3",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_string_storage_ptr",
+                  "typeString": "string"
+                },
+                "typeName": {
+                  "id": 129,
+                  "name": "string",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "110:6:3",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_storage_ptr",
+                    "typeString": "string"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 132,
+                "name": "ipfsHash",
+                "nodeType": "VariableDeclaration",
+                "scope": 137,
+                "src": "137:15:3",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_string_storage_ptr",
+                  "typeString": "string"
+                },
+                "typeName": {
+                  "id": 131,
+                  "name": "string",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "137:6:3",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_storage_ptr",
+                    "typeString": "string"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 134,
+                "name": "publisherAddress",
+                "nodeType": "VariableDeclaration",
+                "scope": 137,
+                "src": "162:24:3",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 133,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "162:7:3",
+                  "stateMutability": "nonpayable",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 136,
+                "name": "saleCommission",
+                "nodeType": "VariableDeclaration",
+                "scope": 137,
+                "src": "218:22:3",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 135,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "218:7:3",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "BookInfo",
+            "nodeType": "StructDefinition",
+            "scope": 150,
+            "src": "59:218:3",
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "id": 141,
+            "name": "fileinfo",
+            "nodeType": "VariableDeclaration",
+            "scope": 150,
+            "src": "283:46:3",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_BookInfo_$137_storage_$",
+              "typeString": "mapping(uint256 => struct PublishBook.BookInfo)"
+            },
+            "typeName": {
+              "id": 140,
+              "keyType": {
+                "id": 138,
+                "name": "uint256",
+                "nodeType": "ElementaryTypeName",
+                "src": "291:7:3",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                }
+              },
+              "nodeType": "Mapping",
+              "src": "283:28:3",
+              "typeDescriptions": {
+                "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_BookInfo_$137_storage_$",
+                "typeString": "mapping(uint256 => struct PublishBook.BookInfo)"
+              },
+              "valueType": {
+                "contractScope": null,
+                "id": 139,
+                "name": "BookInfo",
+                "nodeType": "UserDefinedTypeName",
+                "referencedDeclaration": 137,
+                "src": "302:8:3",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_BookInfo_$137_storage_ptr",
+                  "typeString": "struct PublishBook.BookInfo"
+                }
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "constant": false,
+            "id": 145,
+            "name": "setPrice",
+            "nodeType": "VariableDeclaration",
+            "scope": 150,
+            "src": "374:46:3",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_mapping$_t_uint256_$_t_uint256_$",
+              "typeString": "mapping(uint256 => uint256)"
+            },
+            "typeName": {
+              "id": 144,
+              "keyType": {
+                "id": 142,
+                "name": "uint256",
+                "nodeType": "ElementaryTypeName",
+                "src": "383:7:3",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                }
+              },
+              "nodeType": "Mapping",
+              "src": "374:28:3",
+              "typeDescriptions": {
+                "typeIdentifier": "t_mapping$_t_uint256_$_t_uint256_$",
+                "typeString": "mapping(uint256 => uint256)"
+              },
+              "valueType": {
+                "id": 143,
+                "name": "uint256",
+                "nodeType": "ElementaryTypeName",
+                "src": "394:7:3",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                }
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "constant": false,
+            "id": 149,
+            "name": "publisherBalance",
+            "nodeType": "VariableDeclaration",
+            "scope": 150,
+            "src": "513:54:3",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+              "typeString": "mapping(address => uint256)"
+            },
+            "typeName": {
+              "id": 148,
+              "keyType": {
+                "id": 146,
+                "name": "address",
+                "nodeType": "ElementaryTypeName",
+                "src": "522:7:3",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                }
+              },
+              "nodeType": "Mapping",
+              "src": "513:28:3",
+              "typeDescriptions": {
+                "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+                "typeString": "mapping(address => uint256)"
+              },
+              "valueType": {
+                "id": 147,
+                "name": "uint256",
+                "nodeType": "ElementaryTypeName",
+                "src": "533:7:3",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                }
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          }
+        ],
+        "scope": 151,
+        "src": "25:1511:3"
+      }
+    ],
+    "src": "0:1536:3"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.5.0+commit.1d4f565a.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.0.1",
+  "updatedAt": "2019-02-19T10:46:13.544Z",
+  "devdoc": {
+    "methods": {}
+  },
+  "userdoc": {
+    "methods": {}
+  }
+}

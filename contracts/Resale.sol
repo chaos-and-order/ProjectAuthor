@@ -3,29 +3,16 @@ import "./Tokenize.sol";
 
 contract Resale is Tokenize{
 
-
-    //TO DO: As user logs in, he needs to see his current libraby, without sacrificing privacy.
-    
-    /*
-    gotta see how to incorporate this fruitfully
-    constructor () public {
-        // register the supported interfaces to conform to ERC721 via ERC165
-        _registerInterface(_INTERFACE_ID_ERC721);
-    }
-    */
-
+    //event to be emitted when a seller puts out a token for sale
     event ResalePriceSet(uint256 indexed resalePrice, uint256 indexed tokenId);
 
-
+    //function to show the balance of tokens in a user's account
     function balanceOf(address owner) public view returns (uint256) {
         require(owner != address(0), "Invalid address given!");
         return _ownedTokensCount[owner].current();
     }
 
-
-
-    //RESALE CODE BEGINS
-            
+    //function to set resale price on a token that is being put up for sale        
     function setResalePrice(uint256 newPrice, uint256 tokenId) public{
         require(ownerOf(tokenId)==msg.sender, "You are not the owner of this token!");
         reSale[tokenId].resalePrice = newPrice*1 wei;
@@ -53,7 +40,7 @@ contract Resale is Tokenize{
         //updating token balances for both seller and buyer
         _ownedTokensCount[_tokenOwner[tokenId]].decrement();
         _ownedTokensCount[msg.sender].increment();
-        //transfer of baton
+
         emit Transfer(_tokenOwner[tokenId], msg.sender, tokenId);
         _tokenOwner[tokenId] = msg.sender;
         reSale[tokenId].isUpForResale = false;
@@ -76,7 +63,6 @@ contract Resale is Tokenize{
     A digital handshake is what we need, between the token and the contract
     where both agrees that the token holds the ipfshash. 
     Tokendata must never be out in the open like this. 
-    But, alas.  
     */
     function viewTokenData(uint256 tokenId) public view returns(string memory){
         require(_exists(tokenId), "Token doesn't exist!");
@@ -84,7 +70,7 @@ contract Resale is Tokenize{
         return tokenData[tokenId].ipfsHash;
     }
 /*
-    TO DO if time allows: 
+    TO DO [Future versions]: 
     1.
     scrap the above viewTokenData.
     user gets access to file solely depending on 
