@@ -4,6 +4,12 @@ ProjectAuthor
 Created By: Richu A Kuttikattu & Lakhan Darshan
 
 
+#########
+
+IMPORTANT: Resale.sol is the main contract.
+
+#########
+
 
 Description:
 
