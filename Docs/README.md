@@ -16,7 +16,7 @@ Description:
 
 Books are increasingly becoming digital. New challenges and opportunities arises with this trend.
 
-In this project we aim to build a system where digital books behave more or less as their physical counterparts, 
+In this project we aim to build a system where digital books behave more or less like their physical counterparts, 
 while retaining the ease of use and environmental benefits of the digital world.
 
 The current systems treat every digital copy of a given book as the same, and each of the copies
@@ -34,15 +34,37 @@ An entirely new market can be dug up from this, due to the uniqueness of the cop
 and users might be interested in paying a premium for certain copies (copy #1 of Fifty Shades of Grey, for example).
 
 
+#############################
+Installation Instrucations
+#############################
+
+Please ensure that your computer has the following prerequisites installed before proceeding:
+
+-node npm
+-truffle
+-ganache-cli
+-metamask-extension (preferably in google chrome) [with at least 1 ether in a couple of the accounts in Ropsten/Rinkeby/localhost]
 
 
+1) Clone the repo into a local folder.
+2) From the terminal navigate to 'projectauthor/client'.
+3) Execute 'npm install' to install all the necessary dependencies.
+
+[For local execution] 
+1) In another terminal run 'ganache-cli'.
+2) From the terminal navigate back to the root folder.
+3) Execute 'truffle compile' and then 'truffle migrate'[make note of the transaction address shown on screen].
+4) Navigate to 'projectauthor/client/src/contracts'.
+5) Copy the abi in Resale.json and paste it at the 'abi' variable in projectAuthor.js at 'projectauthor/client/src'.
+6) Update the address field in the same file with the address of the contract mentioned in step 5.
+7) From the terminal navigate to 'projectauthor/client' and execute 'npm start'.[This will fire up the dApp which is a react Application on your browser].
+8) Use the ganache given accounts to login to your metamask extension.
 
 
-Installation:
-
-
-
-
-
+[For testnet execution]
+1) Deploy contracts in 'projectauthor/contracts' on to the test net of your choice [avoid Migrations.sol].
+2) Ensure your metamask account has at least 1 ether on the said network.
+3) Once deployed [Resale.sol is the final contract so deploy this] copy the abi & the contract address and paste it in projectAuthor.js at 	'projectauthor/client/src'.
+4) From the terminal navigate to 'projectauthor/client' and execute 'npm start'.[This will fire up the dApp which is a react Application on your browser]
 
 
