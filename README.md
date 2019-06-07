@@ -12,4 +12,4 @@ making it an additional stream of revenue for the publisher.
 An entirely new market can be dug up from this, due to the uniqueness of the copies. Copies can be auctioned off,
 and users might be interested in paying a premium for certain copies (copy #1 of Fifty Shades of Grey, for example).
 
-Books are just a single use-case, of course. Any kind of digital content(movies, music, artwork) etc. Can be made unique like this.
+Books are just a single use-case, of course. Any kind of digital content(movies, music, artwork) etc. can be made unique like this.
